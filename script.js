@@ -9,11 +9,8 @@ let getName = (url) => {
  	}
  	return name;
 }
-
 let name = getName(url);
-
-const url = 'https://api.github.com/users/6thSence';
-fetch(url)
+fetch('https://api.github.com/users/Inna1996')
  .then(res => res.json())
  .then(showUser => {
    let userAvatar  = showUser.avatar_url;
@@ -25,25 +22,29 @@ fetch(url)
     let userTitleElement = document.createElement('h1');
     userTitleElement.innerHTML = userName
     body.appendChild(userTitleElement);
-   }
+  };
 
    let addDescription = () => {
     let userDescriptionElement = document.createElement('p');
     userDescriptionElement.innerHTML = userDescription
     body.appendChild(userDescriptionElement);
-   }
+  };
 
    let addFoto = () => {
     let userAvatarElement = document.createElement('img');
-    userAvatarElement.innerHTML = userAvatar
+    userAvatarElement.scr = userAvatar;
+    let newString = document.createElement('br');
     body.appendChild(userAvatarElement);
-   }
+    body.appendChild(newString);
+  };
 
    let addLink = () => {
     let userLinkElement = document.createElement('a');
-    userLinkElement.innerHTML = userLink
+    let text = document.createTextNode('Profile');
+    userLinkElement.href = userLink;
+    userLinkElement.innerHTML = ('Profile');
     body.appendChild(userLinkElement);
-   }
+  };
 
    addName();
    addDescription();

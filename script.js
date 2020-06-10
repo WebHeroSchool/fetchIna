@@ -7,7 +7,7 @@ const stopLoader = () => {
 };
 
 let getName = (url) => {
-	let urlMas = url.split('=');
+	let urlMas = url.split('username=');
 	let name = urlMas[1];
 	if(name == undefined) {
 		name = 'Inna1996';
@@ -21,17 +21,17 @@ let getDate = new Promise((resolve, reject) => {
 });
 let getInfo  = fetch('https://api.github.com/users/' + name);
 
-Promise.all([getName, getInfo])
+Promise.all([getDate, getInfo])
  .then(([request, date]) => {
 	 requestInfo = request;
 	 requestDate = date;
  })
  .then(res => requestInfo.json())
  .then(showUserInfo => {
-   let userAvatar  = json.avatar_url;
-   let userName  = json.login;
-   let userDescription = json.bio;
-   let userLink  = json.html_url;
+   let userAvatar  = showUserInfo.avatar_url;
+   let userName  = showUserInfo.login;
+   let userDescription = showUserInfo.bio;
+   let userLink  = showUserInfo.html_url;
  if(name)  {
    let addName = () => {
     let userTitleElement = document.createElement('h1');

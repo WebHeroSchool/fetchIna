@@ -1,23 +1,38 @@
 let body = document.body;
 let url = window.location.toString();
+let now = new Date ();
+const loader = document.getElementById('cube-loader');
+const stopLoader = () => {
+  loader.classList.add('hidden');
+};
 
 let getName = (url) => {
 	let urlMas = url.split('=');
 	let name = urlMas[1];
 	if(name == undefined) {
-		name = 'WhitcherX';
+		name = 'Inna1996';
  	}
  	return name;
 }
-let name = getName(url);
-fetch('https://api.github.com/users/Inna1996')
- .then(res => res.json())
- .then(showUser => {
-   let userAvatar  = showUser.avatar_url;
-   let userName  = showUser.login;
-   let userDescription  = showUser.bio;
-   let userLink  = showUser.html_url;
 
+let name = getName(url);
+let getDate = new Promise((resolve, reject) => {
+	setTimeout(() => now ? resolve(now) : reject('Не определенно'), 3000);
+});
+let getInfo  = fetch('https://api.github.com/users/' + name);
+
+Promise.all([getName, getInfo])
+ .then(([request, date]) => {
+	 requestInfo = request;
+	 requestDate = date;
+ })
+ .then(res => requestInfo.json())
+ .then(showUserInfo => {
+   let userAvatar  = json.avatar_url;
+   let userName  = json.login;
+   let userDescription = json.bio;
+   let userLink  = json.html_url;
+ if(name)  {
    let addName = () => {
     let userTitleElement = document.createElement('h1');
     userTitleElement.innerHTML = userName
@@ -32,7 +47,7 @@ fetch('https://api.github.com/users/Inna1996')
 
    let addFoto = () => {
     let userAvatarElement = document.createElement('img');
-    userAvatarElement.scr = userAvatar;
+    userAvatarElement.src = userAvatar;
     let newString = document.createElement('br');
     body.appendChild(userAvatarElement);
     body.appendChild(newString);
@@ -46,10 +61,20 @@ fetch('https://api.github.com/users/Inna1996')
     body.appendChild(userLinkElement);
   };
 
+  let addDate = () => {
+		let date =  document.createElement('p');
+		date.innerHTML = now;
+		body.appendChild(date);
+	}
    addName();
    addDescription();
    addFoto();
    addLink();
-
+	 addDate();
+	 stopLoader();
+ }
+ else {
+	 alert('Пользователь не найден')
+ }
  })
  .catch(err => alert(err + "Информация о пользователе не доступна"));

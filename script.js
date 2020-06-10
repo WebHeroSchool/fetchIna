@@ -21,7 +21,7 @@ let getDate = new Promise((resolve, reject) => {
 });
 let getInfo  = fetch('https://api.github.com/users/' + name);
 
-Promise.all([getDate, getInfo])
+Promise.all([getInfo, getDate])
  .then(([request, date]) => {
 	 requestInfo = request;
 	 requestDate = date;
@@ -66,6 +66,7 @@ Promise.all([getDate, getInfo])
 		date.innerHTML = now;
 		body.appendChild(date);
 	}
+	 loader.style.display = 'none';
    addName();
    addDescription();
    addFoto();

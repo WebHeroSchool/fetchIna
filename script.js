@@ -1,12 +1,12 @@
-let body = document.body;
-let url = window.location.toString();
-let now = new Date ();
+const body = document.body;
+const url = window.location.toString();
+const now = new Date ();
 const loader = document.getElementById('cube-loader');
 const stopLoader = () => {
   loader.classList.add('hidden');
 };
 
-let getName = (url) => {
+const getName = (url) => {
 	let urlMas = url.split('username=');
 	let name = urlMas[1];
 	if(name == undefined) {
@@ -15,11 +15,11 @@ let getName = (url) => {
  	return name;
 }
 
-let name = getName(url);
-let getDate = new Promise((resolve, reject) => {
+const name = getName(url);
+const getDate = new Promise((resolve, reject) => {
 	setTimeout(() => now ? resolve(now) : reject('Не определенно'), 3000);
 });
-let getInfo  = fetch('https://api.github.com/users/' + name);
+const getInfo  = fetch('https://api.github.com/users/' + name);
 
 Promise.all([getInfo, getDate])
  .then(([request, date]) => {
@@ -32,20 +32,20 @@ Promise.all([getInfo, getDate])
    let userName  = showUserInfo.login;
    let userDescription = showUserInfo.bio;
    let userLink  = showUserInfo.html_url;
- if(name)  {
-   let addName = () => {
+ if((userName != undefined))  {
+   const addName = () => {
     let userTitleElement = document.createElement('h1');
     userTitleElement.innerHTML = userName
     body.appendChild(userTitleElement);
   };
 
-   let addDescription = () => {
+   const addDescription = () => {
     let userDescriptionElement = document.createElement('p');
     userDescriptionElement.innerHTML = userDescription
     body.appendChild(userDescriptionElement);
   };
 
-   let addFoto = () => {
+   const addFoto = () => {
     let userAvatarElement = document.createElement('img');
     userAvatarElement.src = userAvatar;
     let newString = document.createElement('br');
@@ -53,7 +53,7 @@ Promise.all([getInfo, getDate])
     body.appendChild(newString);
   };
 
-   let addLink = () => {
+   const addLink = () => {
     let userLinkElement = document.createElement('a');
     let text = document.createTextNode('Profile');
     userLinkElement.href = userLink;
@@ -61,7 +61,7 @@ Promise.all([getInfo, getDate])
     body.appendChild(userLinkElement);
   };
 
-  let addDate = () => {
+  const addDate = () => {
 		let date =  document.createElement('p');
 		date.innerHTML = now;
 		body.appendChild(date);
@@ -73,9 +73,9 @@ Promise.all([getInfo, getDate])
    addLink();
 	 addDate();
 	 stopLoader();
- }
- else {
-	 alert('Пользователь не найден')
+ } else {
+	 alert('Пользователь не найден');
+   
  }
  })
  .catch(err => alert(err + "Информация о пользователе не доступна"));

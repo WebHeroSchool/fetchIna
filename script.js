@@ -1,54 +1,81 @@
-let body = document.body;
-let url = window.location.toString();
+const body = document.body;
+const url = window.location.toString();
+const now = new Date ();
+const loader = document.getElementById('cube-loader');
+const stopLoader = () => {
+  loader.classList.add('hidden');
+};
 
-let getName = (url) => {
-	let urlMas = url.split('=');
+const getName = (url) => {
+	let urlMas = url.split('username=');
 	let name = urlMas[1];
 	if(name == undefined) {
-		name = 'WhitcherX';
+		name = 'Inna1996';
  	}
  	return name;
 }
 
-let name = getName(url);
+const name = getName(url);
+const getDate = new Promise((resolve, reject) => {
+	setTimeout(() => now ? resolve(now) : reject('Не определенно'), 3000);
+});
+const getInfo  = fetch('https://api.github.com/users/' + name);
 
-const url = 'https://api.github.com/users/6thSence';
-fetch(url)
- .then(res => res.json())
- .then(showUser => {
-   let userAvatar  = showUser.avatar_url;
-   let userName  = showUser.login;
-   let userDescription  = showUser.bio;
-   let userLink  = showUser.html_url;
-
-   let addName = () => {
+Promise.all([getInfo, getDate])
+ .then(([request, date]) => {
+	 requestInfo = request;
+	 requestDate = date;
+ })
+ .then(res => requestInfo.json())
+ .then(showUserInfo => {
+   let userAvatar  = showUserInfo.avatar_url;
+   let userName  = showUserInfo.login;
+   let userDescription = showUserInfo.bio;
+   let userLink  = showUserInfo.html_url;
+ if((userName != undefined))  {
+   const addName = () => {
     let userTitleElement = document.createElement('h1');
     userTitleElement.innerHTML = userName
     body.appendChild(userTitleElement);
-   }
+  };
 
-   let addDescription = () => {
+   const addDescription = () => {
     let userDescriptionElement = document.createElement('p');
     userDescriptionElement.innerHTML = userDescription
     body.appendChild(userDescriptionElement);
-   }
+  };
 
-   let addFoto = () => {
+   const addFoto = () => {
     let userAvatarElement = document.createElement('img');
-    userAvatarElement.innerHTML = userAvatar
+    userAvatarElement.src = userAvatar;
+    let newString = document.createElement('br');
     body.appendChild(userAvatarElement);
-   }
+    body.appendChild(newString);
+  };
 
-   let addLink = () => {
+   const addLink = () => {
     let userLinkElement = document.createElement('a');
-    userLinkElement.innerHTML = userLink
+    let text = document.createTextNode('Profile');
+    userLinkElement.href = userLink;
+    userLinkElement.innerHTML = ('Profile');
     body.appendChild(userLinkElement);
-   }
+  };
 
+  const addDate = () => {
+		let date =  document.createElement('p');
+		date.innerHTML = now;
+		body.appendChild(date);
+	}
+	 loader.style.display = 'none';
    addName();
    addDescription();
    addFoto();
    addLink();
-
+	 addDate();
+	 stopLoader();
+ } else {
+	 alert('Пользователь не найден');
+   
+ }
  })
  .catch(err => alert(err + "Информация о пользователе не доступна"));

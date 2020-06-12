@@ -17,7 +17,7 @@ const getName = (url) => {
 
 const name = getName(url);
 const getDate = new Promise((resolve, reject) => {
-	setTimeout(() => now ? resolve(now) : reject('Не определенно'), 3000);
+	setTimeout(() => now ? resolve(now) : reject('Не определенно'), 2000);
 });
 const getInfo  = fetch('https://api.github.com/users/' + name);
 
@@ -34,7 +34,11 @@ Promise.all([getInfo, getDate])
    let userLink  = showUserInfo.html_url;
  if((userName != undefined))  {
    const addName = () => {
-    let userTitleElement = document.createElement('h1');
+    let userTitleElement = document.createElement('a');
+    userTitleElement.classList.add = ('active');
+    userTitleElement.style.color = ('black');
+    let title = document.createTextNode('Profile');
+    userTitleElement.href = userLink;
     userTitleElement.innerHTML = userName
     body.appendChild(userTitleElement);
   };
@@ -75,7 +79,7 @@ Promise.all([getInfo, getDate])
 	 stopLoader();
  } else {
 	 alert('Пользователь не найден');
-   
+
  }
  })
  .catch(err => alert(err + "Информация о пользователе не доступна"));
